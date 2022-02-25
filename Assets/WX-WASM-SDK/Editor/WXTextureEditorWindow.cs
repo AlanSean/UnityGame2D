@@ -486,7 +486,6 @@ namespace WeChatWASM
 
 		public void RemakeData()
 		{
-
 			var SourceDirs = WXTextureEditorWindow.miniGameConf.CompressTexture.SourceDirs;
 			var QualityList = WXTextureEditorWindow.miniGameConf.CompressTexture.QualityList;
 			var FlareDirList = WXTextureEditorWindow.miniGameConf.CompressTexture.FlareDirList;
@@ -503,12 +502,12 @@ namespace WeChatWASM
 				
 
 				foreach (var item in QualityList) {
-					if (item.Path.IndexOf(path)>-1) {
+					if (path.IndexOf(item.Path) >-1) {
 						quality = item.Quality;
 					}
 				}
 				foreach (var item in FlareDirList) {
-					if (item.IndexOf(path)>-1) {
+					if (path.IndexOf(item)>-1) {
 						IsFixed = "true";
 					}
 				}

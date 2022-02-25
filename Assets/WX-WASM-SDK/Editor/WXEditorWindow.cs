@@ -8,7 +8,6 @@ using Brotli;
 using System.Text.RegularExpressions;
 using UnityEngine.Rendering;
 using LitJson;
-using System.Collections;
 
 namespace WeChatWASM
 {
@@ -71,12 +70,7 @@ namespace WeChatWASM
             // 打开面板时自动检查更新
             PluginUpdateManager.CheckUpdte();
             Init();
-
         }
-
-
-
-
 
 
 

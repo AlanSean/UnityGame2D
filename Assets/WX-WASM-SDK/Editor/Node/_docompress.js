@@ -196,11 +196,11 @@ const Mod = {
         const cm = spawn(`${Conf.dataPath}/WX-WASM-SDK/Editor/${exe}`, ['-cs', src, dstPath,'8x8', '-medium']);
 
         cm.stdout.on('data', (data) => {
-            //   console.log(`${src} astc stdout: ${data}`);
+         //      console.log(`${src} astc stdout: ${data}`);
         });
 
         cm.stderr.on('data', (data) => {
-           //    console.error(`${src} astc stderr: ${data}`);
+         //      console.error(`${src} astc stderr: ${data}`);
         });
 
         cm.on('close', (code) => {

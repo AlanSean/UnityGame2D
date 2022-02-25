@@ -5,13 +5,6 @@ mergeInto(LibraryManager.library, {
         }
         return Pointer_stringify(str);
     },
-    glTexStorage2D: function(x0, x1, x2, x3, x4){
-        window._lastTexStorage2DParams = [x0, x1, x2, x3, x4];
-        if(x2 == 33777){
-            return;
-        }
-        GLctx["texStorage2D"](x0, x1, x2, x3, x4);
-    },
     glGenTextures: function (n, textures) {
         for (var i = 0; i < n; i++) {
             var texture = GLctx.createTexture();
@@ -266,7 +259,7 @@ mergeInto(LibraryManager.library, {
                 }))
             }
             return
-        }else{
+        }else if(GameGlobal.TextureConfig || GameGlobal.SpriteAtlasConfig){
             GLctx["texStorage2D"](p[0], p[1], p[2], p[3], p[4])
         }
     if (GL.currentContext.supportsWebGL2EntryPoints) {

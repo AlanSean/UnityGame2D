@@ -251,6 +251,10 @@ namespace WeChatWASM
           old = "Browser.mainLoop.runIter",
           newStr = "if(GameGlobal.manager.isVisible) Browser.mainLoop.runIter"
       },
+      new Rule(){
+          old = "function _glTexStorage2D\\(x0, *x1, *x2, *x3, *x4\\) *{",
+          newStr = "function _glTexStorage2D(x0, x1, x2, x3, x4) {window._lastTexStorage2DParams = [x0, x1, x2, x3, x4];if(x2 == 33777 &&(GameGlobal.TextureConfig || GameGlobal.SpriteAtlasConfig)){return;}"
+      },
 #if UNITY_2020
        new Rule()
        {

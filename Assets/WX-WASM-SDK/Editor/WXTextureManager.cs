@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Collections.Generic;
 using LitJson;
+using System.Linq;
 
 namespace WeChatWASM
 {
@@ -126,7 +127,7 @@ namespace WeChatWASM
 
             WriteResult(miniGameConf);
 
-            UnityEngine.Debug.LogError("如果您使用了Flare，NGUI的图集，SpriteRender，请将对应的纹理的目录配置在`微信小游戏 / 包体瘦身--压缩纹理`中，并勾选上保留宽高，否则会展示异常，如果没有使用可忽略本条提示。");
+            UnityEngine.Debug.LogError("如果您使用了Flare，NGUI的图集，SpriteRender，ImageType Sliced 请将对应的纹理的目录配置在`微信小游戏 / 包体瘦身--压缩纹理`中，并勾选上保留宽高，否则会展示异常，如果没有使用可忽略本条提示。");
 
         }
 
@@ -157,7 +158,7 @@ namespace WeChatWASM
                     FileInfo fin = new FileInfo(item.path);
                     if (fin.LastWriteTime.ToString() == item.lastWriteTime)
                     {
-                        WXSpriteAtlasManager.AddPath2SpriteList(item.path,item.id);
+                        WXSpriteAtlasManager.AddPath2SpriteAtlasList(item.path,item.id);
 
                         textureAtlasDataList.Add(item.id-1, item);
 
@@ -301,7 +302,7 @@ namespace WeChatWASM
 
             var list = AssetDatabase.FindAssets("t:texture", GetWorkingFolders());
 
-
+            list = list.GroupBy(p => p).Select(p => p.Key).ToArray();
             foreach (string guid in list)
             {
 
@@ -310,7 +311,7 @@ namespace WeChatWASM
                 var path = AssetDatabase.GUIDToAssetPath(guid);
 
 
-                if (WXSpriteAtlasManager.PathIsInSpriteAtlas(path))
+                if (WXSpriteAtlasManager.PathIsInSpriteAtlas(path) || WXSpriteAtlasManager.spriteAtlasMap.ContainsValue(path))
                 {
                     continue;
                 }
@@ -488,6 +489,10 @@ namespace WeChatWASM
                         newIndex++; //id可能被占了
                     }
 
+                    if (path.IndexOf("common_image_140.png")>-1)
+                    {
+                        Debug.Log(path+"-------------");
+                    }
                     
                     textureAtlasDataList.Add(newIndex, new WXTextureData() {
 
@@ -806,7 +811,7 @@ namespace WeChatWASM
 
                 bytes = new byte[texture2D.GetRawTextureData().Length];
 
-                var id = WXSpriteAtlasManager.AddPath2SpriteList(p);
+                var id = WXSpriteAtlasManager.AddPath2SpriteAtlasList(p);
 
 
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using WeChatWASM;
 public class PlayerController : MonoBehaviour
 {
   //跳跃状态
@@ -16,24 +17,32 @@ public class PlayerController : MonoBehaviour
   private bool IsHurt; // 默认是false
 
 
-  //碰撞机
+  [Tooltip("人物碰撞体")]
   public Collider2D coll;
-  //移动速度
+  [Tooltip("移动速度")]
   public float speed;
-  //跳跃高度
+  [Tooltip("跳跃高度")]
   public float jumpforce;
   public Transform groundCheck;
-  //地面
+  [Tooltip("地面")]
   public LayerMask ground;
+  [Tooltip("樱桃字体")]
   public TMP_Text CherryNum;
-  //樱桃计数
+  [Tooltip("樱桃计数")]
   public int CherryCount = 0;
+  //受伤反弹速度
+  [Tooltip("受伤反弹速度")]
+  public int HurtSpeed;
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
     // coll = GetComponent<Collider2D>();
     // jumpCount = 2;
+    // WX.InitSDK((int code) =>
+    // {
+    //   Debug.Log(code);
+    // });
   }
 
   void FixedUpdate()
@@ -61,6 +70,7 @@ public class PlayerController : MonoBehaviour
     float horizontalmove = Input.GetAxisRaw("Horizontal");
 
     rb.velocity = new Vector2(horizontalmove * speed, rb.velocity.y);
+
     //角色移动
     if (horizontalmove != 0)
     {
@@ -87,6 +97,12 @@ public class PlayerController : MonoBehaviour
   }
   void SwitchAnim()
   {
+    if (rb.velocity.y < 0.1f && !IsGrounp)
+    {
+      // anim.SetBool("falling", true);
+    }
+
+
     anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
 
     if (IsGrounp)
@@ -94,22 +110,33 @@ public class PlayerController : MonoBehaviour
       anim.SetBool("falling", false);
       anim.SetBool("idle", true);
     }
-    else if (IsHurt)
+    else
     {
+      if (rb.velocity.y > 0)
+      {
+        anim.SetBool("jumping", true);
+      }
+      else if (rb.velocity.y < 0)
+      {
+        anim.SetBool("jumping", false);
+        anim.SetBool("falling", true);
+      }
+    }
+
+
+    //受伤状态重置
+    if (!anim.GetBool("jumping") && IsHurt)
+    {
+      anim.SetBool("hurt", true);
+      // anim.SetFloat("running", 0);
       if (Mathf.Abs(rb.velocity.x) < 0.1f)
       {
+        anim.SetBool("hurt", false);
+        // anim.SetBool("idle", true);
         IsHurt = false;
       }
     }
-    else if (rb.velocity.y > 0)
-    {
-      anim.SetBool("jumping", true);
-    }
-    else if (rb.velocity.y < 0)
-    {
-      anim.SetBool("jumping", false);
-      anim.SetBool("falling", true);
-    }
+
   }
 
   //收集物品
@@ -140,12 +167,12 @@ public class PlayerController : MonoBehaviour
     }
     else if (transform.position.x < collision.gameObject.transform.position.x)
     {
-      rb.velocity = new Vector2(-10, rb.velocity.y);
+      rb.velocity = new Vector2(-1 * HurtSpeed, rb.velocity.y);
       IsHurt = true;
     }
     else if (transform.position.x > collision.gameObject.transform.position.x)
     {
-      rb.velocity = new Vector2(10, rb.velocity.y);
+      rb.velocity = new Vector2(HurtSpeed, rb.velocity.y);
       IsHurt = true;
     }
   }
