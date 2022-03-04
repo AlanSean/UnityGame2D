@@ -13,7 +13,7 @@ public class Ball : MonoBehaviour
   public Sprite PointSprite;
   public float ballMaxVector = 3;
   public float ballminVector = 1;
-  private Rigidbody2D rb;
+  private Rigidbody rb;
   private bool isTouchDown = false;
   //出发点
   private Vector3 StartPoint;
@@ -33,7 +33,7 @@ public class Ball : MonoBehaviour
   }
   void Start()
   {
-    rb = GetComponent<Rigidbody2D>();
+    rb = GetComponent<Rigidbody>();
     rb.isKinematic = true;
     isTouchDown = true;
   }
@@ -64,7 +64,7 @@ public class Ball : MonoBehaviour
   {
     rb.isKinematic = false;
     //添加脉冲
-    rb.AddForce(PushSpeed, ForceMode2D.Impulse);
+    rb.AddForce(PushSpeed, ForceMode.Impulse);
     Debug.Log("up" + PushSpeed);
   }
 }

@@ -8,18 +8,12 @@ public class Points : MonoBehaviour
   public SpriteRenderer _sprite;
   void Awake()
   {
-    _sprite.sprite = GetComponent<Control>().PointSprite;
-    Debug.Log(GetComponent<Control>().PointSprite);
-  }
-
-  // Update is called once per frame
-  void Update()
-  {
-
+    // _sprite.sprite = GetComponent<Player>().PointSprite;
   }
 
   void OnTriggerEnter(Collider other)
   {
+    Debug.Log(other.name);
     if (other.name == "Ball")
     {
       StartCoroutine("_Fade");
