@@ -489,10 +489,6 @@ namespace WeChatWASM
                         newIndex++; //id可能被占了
                     }
 
-                    if (path.IndexOf("common_image_140.png")>-1)
-                    {
-                        Debug.Log(path+"-------------");
-                    }
                     
                     textureAtlasDataList.Add(newIndex, new WXTextureData() {
 

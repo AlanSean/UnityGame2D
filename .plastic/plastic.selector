@@ -1,4 +1,0 @@
-repository "Game@ssl://wechat_os_qy09tdoqx7yiaklmbmj7aibby@sh03-plasticscm.unity.cn:8787"
-  path "/"
-    br "/main"
-    co "/main"

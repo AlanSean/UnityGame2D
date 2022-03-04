@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: MiniGameConfig
   m_EditorClassIdentifier: 
   ProjectConf:
-    projectName: test
-    Appid: wx8947aa73e4c4fce2
+    projectName: 
+    Appid: 
     CDN: 
     assetLoadType: 1
     VideoUrl: 
-    DST: E:/github/chatGame
+    DST: C:/Users/111/basketballGame/build
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;
@@ -27,7 +27,7 @@ MonoBehaviour:
     MemorySize: 256
     HideAfterCallMain: 1
     preloadFiles: 
-    Orientation: 1
+    Orientation: 0
     bgImageSrc: Assets/WX-WASM-SDK/wechat-default/images/background.jpg
   SDKOptions:
     UseAudioApi: 0

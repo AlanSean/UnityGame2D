@@ -393,7 +393,7 @@ namespace WeChatWASM
         }
 
         public static void SaveSpriteAtlasKey(int id,int index,string path,int width,int height) {
-            spriteAtlasMap.Add(id, path.Replace("\\", "/").Replace(".spriteatlas", "_" + index + ".png"));
+            spriteAtlasMap.Add(id, path.Replace(".spriteatlas", "_" + index + ".png"));
 
             textureDataList.Add(id, new WXTextureData()
             {
@@ -465,8 +465,8 @@ namespace WeChatWASM
 
             return new Rect()
             {
-                x = width * left,
-                y = height * bottom,
+                x = (float)System.Math.Round(width * left),
+                y = (float)System.Math.Round(height * bottom),
                 width = width * (right - left),
                 height = height * (top - bottom)
             };
@@ -686,7 +686,6 @@ namespace WeChatWASM
 
 
                 var dataMd5 = UnityUtil.GetMd5Str(texture2D.GetRawTextureData()).Substring(0,8);
-                spriteAtlasPath = spriteAtlasPath.Replace("\\", "/");
 
                 var tmpDir = Path.Combine(WXTextureManager.textureDstDir, "spriteAtlas", dirMd5).Replace("\\", "/");
 
