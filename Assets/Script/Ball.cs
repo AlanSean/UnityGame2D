@@ -1,18 +1,18 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
 public class Ball : MonoBehaviour
 {
   [Header("速度系数")]
   /// <summary>
   /// 速度系数
   /// </summary>
-  public float SpeedFactor = 5f;
+  public float SpeedFactor = 15f;
   [Tooltip("指示器的精灵")]
   public Sprite PointSprite;
   public float ballMaxVector = 3;
   public float ballminVector = 1;
+
+
+  private Player player;
   private Rigidbody rb;
   private bool isTouchDown = false;
   //出发点
@@ -24,12 +24,9 @@ public class Ball : MonoBehaviour
   //推进速度
   private Vector3 PushSpeed;
 
-  private List<GameObject> trajectoryPoints;
-
   void Awake()
   {
-    trajectoryPoints = new List<GameObject>();
-    GameObject _parent_tp = new GameObject();
+    player = Player.instance;
   }
   void Start()
   {
@@ -40,7 +37,6 @@ public class Ball : MonoBehaviour
 
   void OnMouseDown()
   {
-    Debug.Log("down");
     StartPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
   }
   void OnMouseDrag()
@@ -56,15 +52,40 @@ public class Ball : MonoBehaviour
 
     PushSpeed = Distance * VelocityVector * SpeedFactor;
 
-    Debug.Log("move" + PushSpeed);
-    // dot.UpdateLine(transform.position, PushSpeed);
+    player.UpdateTrajectoryPoints(transform.position, PushSpeed);
+    player.ShowPoints();
   }
 
   void OnMouseUp()
   {
-    rb.isKinematic = false;
-    //添加脉冲
-    rb.AddForce(PushSpeed, ForceMode.Impulse);
-    Debug.Log("up" + PushSpeed);
+    /// 拖动大于0.5才能进行发射
+    if (Distance > 0.5f)
+    {
+      rb.isKinematic = false;
+      //添加脉冲
+      rb.AddForce(PushSpeed.normalized, ForceMode.Impulse);
+      rb.AddTorque(PushSpeed.normalized);
+    }
+    else
+    {
+      player.HidePoints();
+    }
+
+  }
+
+  private void OnCollisionEnter(Collision other)
+  {
+    if (other.gameObject.tag != "Obstacle")
+    {
+      player.HidePoints();
+    }
+
+
+    if (other.gameObject.tag == "Floor")
+    {
+      transform.position = new Vector3(-2.1f, -5f, 0);
+      transform.localEulerAngles = new Vector3(0, 0, 0);
+      rb.isKinematic = true;
+    }
   }
 }
